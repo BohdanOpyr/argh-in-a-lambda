@@ -1,11 +1,10 @@
 def argh(code):
-    pointer = [0,0]
-    direction = [0]# 0: right; 1: down; 2: left; 3: up
-    stack = []
-    field = [list(l)+[" "]*100 for l in code.split("\n")]+[["  "]*100]*100
+    (pointer := [0,0])
+    (direction := [0])
+    (stack := [])
+    (field := [list(l)+[" "]*(80-len(l)) for l in code.split("\n")]+[["  "]*80]*(40-len(code.split("\n"))))
     while 1:
-        instruction = field[pointer[0]][pointer[1]]
-        instructions = {
+        {
             "A":lambda: stack.__setitem__(-1, stack[-1]+ord(field[pointer[0]-1][pointer[1]])),
             "a":lambda: stack.__setitem__(-1, stack[-1]+ord(field[pointer[0]+1][pointer[1]])),
             "D":lambda: stack.pop(),
@@ -34,8 +33,7 @@ def argh(code):
             "X":lambda: direction.__setitem__(0, (direction[0]+3)%4) if stack[-1]<0 else None,
             "x":lambda: direction.__setitem__(0, (direction[0]+1)%4) if stack[-1]<0 else None,
             "#":lambda: direction.__setitem__(0, 1) if pointer==[0,0] and field[0, 1] == "!" else None
-        }# Already using a dictiory so it's a bit easier later on
-        instructions.get(instruction, lambda: [print("[ARGH!]"), exit()])()
+        }.get(field[pointer[0]][pointer[1]], lambda: [print("[ARGH!]"), exit()])()
         {
             0: lambda: pointer.__setitem__(1, pointer[1]+1),
             1: lambda: pointer.__setitem__(0, pointer[0]+1),
